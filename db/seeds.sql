@@ -13,16 +13,16 @@ VALUES
 
 INSERT INTO roles (title, salary, department_id)
 VALUES 
-('Chief Executive Officer', 555000.00, 1),
-('General Manager', 125000.00, 2),
-('Batter', 189000.00, 3),
-('Head Coach', 145000.00, 4),
-('Head Security', 185000.00, 5),
-('Nerd', 125000.00, 6),
+('Chief Executive Officer', 1000000.00, 1),
+('General Manager', 160000.00, 2),
+('Batter', 600000.00, 3),
+('Head Coach', 80000.00, 4),
+('Head Security', 60000.00, 5),
+('Nerd', 5000.00, 6),
 ('Person', 75000.00, 7),
-('Ticket Vendor', 185000.00, 8),
-('Store Front', 95000.00, 9),
-('Grounds Keeper', 135000.00, 10);
+('Ticket Vendor', 66000.00, 8),
+('Store Front', 52000.00, 9),
+('Grounds Keeper', 95000.00, 10);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
