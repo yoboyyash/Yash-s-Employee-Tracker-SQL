@@ -1,0 +1,26 @@
+{
+  "name": "yash-s-employee-tracker-sql",
+  "version": "1.0.0",
+  "description": "Mod12 Homework ",
+  "main": "server.js",
+  "scripts": {
+    "test": "start ",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cfonts": "^3.1.1",
+    "chalk": "^5.2.0",
+    "console.table": "^0.10.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "inquirer": "^8.2.6",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/yoboyyash/Yash-s-Employee-Tracker-SQL"
+  },
+  "author": "Yashraj Baviskar",
+  "license": "MIT "
+}
