@@ -39,7 +39,7 @@ connection.connect((err) => {
 
 
 
-// Function start() to start/init the Tracker App
+// Function start() to start/start the Tracker App
 
 function start() {
     inquirer
@@ -57,6 +57,7 @@ function start() {
                 "Add Manager",
                 "Update an Employee Role",
                 "Update an Employee Manager",
+        
                 "Quit",
             ],
         })
@@ -89,6 +90,7 @@ function start() {
                 case "Update an Employee Manager":
                     updateEmployeeManager();
                     break;
+
                 case "Quit":
                     connection.end();
                     console.log("Goodbye!");
@@ -409,58 +411,56 @@ function updateEmployeeRole() {
     });
 }
 
+
+
 function updateEmployeeManager() {
-    const queryEmployees =
-        "SELECT employee.id, employee.first_name, employee.last_name, roles.title FROM employee LEFT JOIN roles ON employee.role_id = roles.id";
-    const queryRoles = "SELECT * FROM roles";
-    connection.query(queryEmployees, (err, resEmployees) => {
+    const query = "SELECT * FROM employee";
+    connection.query(query, (err, res) => {
         if (err) throw err;
-        connection.query(queryRoles, (err, resRoles) => {
+
+        const arrayEmployee = res.map((employee) => ({
+            value: employee.id,
+            
+            name: `${employee.first_name} ${employee.last_name}`
+        }));
+        const query = "SELECT * FROM employee";
+        connection.query(query, (err, res) => {
             if (err) throw err;
-            inquirer
-                .prompt([
-                    {
-                        type: "list",
-                        name: "employee",
-                        message: "Select the employee to update:",
-                        choices: resEmployees.map(
-                            (employee) =>
-                                `${employee.first_name} ${employee.last_name}`
-                        ),
-                    },
-                    {
-                        type: "list",
-                        name: "role",
-                        message: "Select the new role:",
-                        choices: resRoles.map((role) => role.title),
-                    },
-                ])
-                .then((answers) => {
-                    const employee = resEmployees.find(
-                        (employee) =>
-                            `${employee.first_name} ${employee.last_name}` ===
-                            answers.employee
-                    );
-                    const role = resRoles.find(
-                        (role) => role.title === answers.role
-                    );
-                    const query =
-                        "UPDATE employee SET role_id = ? WHERE id = ?";
-                    connection.query(
-                        query,
-                        [role.id, employee.id],
-                        (err, res) => {
-                            if (err) throw err;
-                            console.log(
-                                `Updated ${employee.first_name} ${employee.last_name}'s role to ${role.title} in the database!`
-                            );
-                            start();
-                        }
-                    );
-                });
-        });
-    });
-}
+          
+            const arrayManager = res.map((employee) => ({
+                value: employee.id,
+                name: `${employee.first_name} ${employee.last_name}`
+            }));
+           
+            arrayManager.push({
+                name: "None",
+                value: undefined
+            });
+            inquirer.prompt([
+                {
+                    type: "list",
+                    message: "Which employee do you want to update?",
+                    name: "update_Employee",
+                    choices: arrayEmployee,
+                },
+                {
+                    type: "list",
+                    message: "Which manager do you want to assign the selected employee?",
+                    name: "update_Manager",
+                    choices: arrayManager,
+                },
+            ])
+                .then(async (answer) => {
+                    var employeeUpdateManager = await connection.promise().query("UPDATE employee SET manager_id = ? WHERE id = ?", [
+                        answer.update_Manager,
+                        answer.update_Employee,]);
+                    console.log("Updated employee's manager");
+                    start();
+                })
+        })
+    })
+};
+
 
 
 
